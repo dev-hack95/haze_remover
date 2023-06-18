@@ -142,15 +142,29 @@ def Dark_Channel(image1, image2):
 col1, col2, col3 = st.columns([0.2, 0.6, 0.2])
 
 with col1:
-    algo = st.selectbox("Select Algo", ['Guided', 'DarkChannel'])
+    algo = st.selectbox("Select Algorithum", ['Guided', 'DarkChannel'])
 
 with col2:
-    upload_file_1 = st.file_uploader("Upload Input Image", type=['png', 'jpeg', 'jpg'], key="image_1")
-    upload_file_2 = st.file_uploader("Upload Target Image", type=['png', 'jpeg', 'jpg'], key="image_2")
+    try:
+        upload_file_1 = st.file_uploader("Upload Input Image", type=['png', 'jpeg', 'jpg'], key="image_1")
+    except:
+        pass
+
+    try:
+        upload_file_2 = st.file_uploader("Upload Target Image", type=['png', 'jpeg', 'jpg'], key="image_2")
+    except:
+        pass
 
     if upload_file_1 is not None:
-        image_1 = Image.open(upload_file_1)
-        image_2 = Image.open(upload_file_2)
+        try:
+            image_1 = Image.open(upload_file_1)
+        except:
+            pass
+
+        try:
+            image_2 = Image.open(upload_file_2)
+        except:
+            st.stop()
 
         col1, col2 = st.columns([0.5, 0.5])
         with col1:
