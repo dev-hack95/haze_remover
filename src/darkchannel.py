@@ -64,7 +64,7 @@ def mse(x, y):
 
 if __name__ == '__main__':
 
-    img = 'dataset/test/input/1-inputs.png'
+    img = 'test/1-inputs.png'
 
     src = cv2.imread(img)
     src= cv2.resize(src,(256,256))
@@ -77,7 +77,7 @@ if __name__ == '__main__':
     J1 = Recover(I, te, A, 0.1)
 
 
-    img_gt = 'dataset/test/target/1-targets.png'
+    img_gt = 'test/GTpng'
     gt = cv2.imread(img_gt)
     gt= cv2.resize(gt,(256,256))
 

@@ -145,15 +145,8 @@ with col1:
     algo = st.selectbox("Select Algorithum", ['Guided', 'DarkChannel'])
 
 with col2:
-    try:
-        upload_file_1 = st.file_uploader("Upload Input Image", type=['png', 'jpeg', 'jpg'], key="image_1")
-    except:
-        pass
-
-    try:
-        upload_file_2 = st.file_uploader("Upload Target Image", type=['png', 'jpeg', 'jpg'], key="image_2")
-    except:
-        pass
+    upload_file_1 = st.file_uploader("Upload Input Image", type=['png', 'jpeg', 'jpg'], key="image_1")
+    upload_file_2 = st.file_uploader("Upload Target Image", type=['png', 'jpeg', 'jpg'], key="image_2")
 
     if upload_file_1 is not None:
         try:
