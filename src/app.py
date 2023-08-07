@@ -1,4 +1,5 @@
 import streamlit as st
+import tensorflow as tf
 from PIL import Image
 import cv2
 import math
@@ -138,6 +139,35 @@ def Dark_Channel(image1, image2):
 
     return recovered_image, mse_noise, psnr, ssim_noise
 
+########################################################### Custom #################################################################
+model = tf.keras.models.load_model('../artifacts/model.h5', compile=False)
+
+def preprocess_image(image1):
+    image = cv2.imread(image1)
+    if image is None:
+        raise ValueError("Image not found or cannot be read.")
+    image = cv2.resize(image, (224, 224))  
+    image = image.astype(np.float32) / 255.0  
+    image = np.expand_dims(image, axis=0) 
+    return image
+
+def custom(image1, image2):
+    input_image = preprocess_image(image1)
+    predicted_image = model.predict(input_image)
+    predicted_image = np.squeeze(predicted_image, axis=0)  
+    predicted_image = np.clip(predicted_image, 0, 1) 
+    input_image = cv2.imread(image1)  
+    input_image = cv2.cvtColor(input_image, cv2.COLOR_BGR2RGB)
+
+    gt = np.array(image2)
+    gt = cv2.resize(gt, (256, 256))
+    mse_noise = np.around(mse(recovered_image, gt), 2)
+    psnr = np.around(cv2.PSNR(np.uint8(recovered_image), gt), 5)
+    ssim_noise = ssim(cv2.cvtColor(np.uint8(recovered_image), cv2.COLOR_BGR2GRAY),
+                      cv2.cvtColor(gt, cv2.COLOR_BGR2GRAY))
+    ssim_noise = np.around(ssim_noise, 5)
+
+    return recovered_image, mse_noise, psnr, ssim_noise
 
 col1, col2, col3 = st.columns([0.2, 0.6, 0.2])
 
@@ -212,6 +242,15 @@ with col3:
             
         if algo == 'DarkChannel' and upload_file_1 and upload_file_2 is not None:
             recovered_image, mse_noise, psnr, ssim_noise = Dark_Channel(image_1, image_2)
+            st.markdown(
+                '<div class="metric-row"><span class="metric-label">MSE:</span><span class="metric-value">{}</span></div>'.format(mse_noise), unsafe_allow_html=True)
+            st.markdown(
+                '<div class="metric-row"><span class="metric-label">PSNR:</span><span class="metric-value">{}</span></div>'.format(psnr), unsafe_allow_html=True)
+            st.markdown(
+                '<div class="metric-row"><span class="metric-label">SSIM:</span><span class="metric-value">{}</span></div>'.format(ssim_noise), unsafe_allow_html=True)
+            
+        if algo == 'Custom' and upload_file_1 and upload_file_2 is not None:
+            recovered_image, mse_noise, psnr, ssim_noise = custom(image_1, image_2)
             st.markdown(
                 '<div class="metric-row"><span class="metric-label">MSE:</span><span class="metric-value">{}</span></div>'.format(mse_noise), unsafe_allow_html=True)
             st.markdown(
