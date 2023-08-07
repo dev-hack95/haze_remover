@@ -140,7 +140,7 @@ def Dark_Channel(image1, image2):
     return recovered_image, mse_noise, psnr, ssim_noise
 
 ########################################################### Custom #################################################################
-model = tf.keras.models.load_model('../artifacts/model.h5', compile=False)
+model = tf.keras.models.load_model('artifacts/model.h5', compile=False)
 
 def preprocess_image(image1):
     image = cv2.imread(image1)
