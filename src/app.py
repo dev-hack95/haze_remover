@@ -172,7 +172,7 @@ def custom(image1, image2):
 col1, col2, col3 = st.columns([0.2, 0.6, 0.2])
 
 with col1:
-    algo = st.selectbox("Select Algorithum", ['Guided', 'DarkChannel'])
+    algo = st.selectbox("Select Algorithum", ['Guided', 'DarkChannel', 'Custom'])
 
 with col2:
     upload_file_1 = st.file_uploader("Upload Input Image", type=['png', 'jpeg', 'jpg'], key="image_1")
