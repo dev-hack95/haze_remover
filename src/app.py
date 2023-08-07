@@ -160,10 +160,10 @@ def custom(image1, image2):
     input_image = cv2.cvtColor(input_image, cv2.COLOR_BGR2RGB)
 
     gt = np.array(image2)
-    gt = cv2.resize(gt, (256, 256))
-    mse_noise = np.around(mse(recovered_image, gt), 2)
-    psnr = np.around(cv2.PSNR(np.uint8(recovered_image), gt), 5)
-    ssim_noise = ssim(cv2.cvtColor(np.uint8(recovered_image), cv2.COLOR_BGR2GRAY),
+    gt = cv2.resize(gt, (224, 224))
+    mse_noise = np.around(mse(np.uint64(predicted_image), gt), 2)
+    psnr = np.around(cv2.PSNR(np.uint64(predicted_image), gt), 5)
+    ssim_noise = ssim(cv2.cvtColor(np.uint64(predicted_image), cv2.COLOR_BGR2GRAY),
                       cv2.cvtColor(gt, cv2.COLOR_BGR2GRAY))
     ssim_noise = np.around(ssim_noise, 5)
 
